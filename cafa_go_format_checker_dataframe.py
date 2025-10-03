@@ -29,26 +29,29 @@ The "correct" and "errmsg" variables then should be passed to the "handle_error"
 Each current record should consist of a target (enzyme) ID, a GO ID and an confidence
 score within the range (0, 1] with less than or equal to 3 significant figures. 
 """
-def go_prediction_check(inrec):
+def go_prediction_check(row):
     correct = True
     errmsg = None
-    fields = [i.strip() for i in inrec.split()]
+    
+    target_id = row.enzyme_ID
+    go_id = row.go
+    confidence_str = row.score
 
-    if len(fields) != 3:
+    if len(row) != 4:
         correct = False
-        errmsg = "GO prediction: " + str(len(fields)) + " fields detected. Should be 3"
-    elif not target_field.match(fields[0]):
+        errmsg = "GO prediction: " + str(len(row)) + " fields detected. Should be 3"
+    elif not target_field.match(target_id):
         correct = False
-        errmsg = "GO prediction: error in first (Target ID) field. " + fields[0] + " is not valid"
-    elif not go_field.match(fields[1]):
+        errmsg = "GO prediction: error in first (Target ID) field. " + target_id + " is not valid"
+    elif not go_field.match(go_id):
         correct = False
-        errmsg = "GO prediction: error in second (GO ID) field. " + fields[1] + " is not valid"
-    elif float(fields[2]) > 1.0 or float(fields[2]) <= 0.0:
+        errmsg = "GO prediction: error in second (GO ID) field. " + go_id + " is not valid"
+    elif float(confidence_str) > 1.0 or float(confidence_str) <= 0.0:
         correct = False
-        errmsg = "GO prediction: error in third (confidence) field, cannot be > 1.0 or <= 0.0. " + fields[2] + " is not valid"
-    elif count_sig_figs(fields[2]) > 3:
+        errmsg = "GO prediction: error in third (confidence) field, cannot be > 1.0 or <= 0.0. " + confidence_str + " is not valid"
+    elif count_sig_figs(str(confidence_str)) > 3:
         correct = False
-        errmsg = "GO prediction: error in third (confidence) field. " + fields[2] + " is not less than or equal to 3 significant figures"
+        errmsg = "GO prediction: error in third (confidence) field. " + confidence_str + " is not less than or equal to 3 significant figures"
     return correct, errmsg
 
 
@@ -84,16 +87,13 @@ Main program that:
 3. calls the error handler "handle_error" to check for error messages/ build the error report.  
 
 """
-def cafa_checker(infile, fileName):
+def cafa_checker(df, fileName):
     line_num = 0
 
-    for inline in infile:
+    for row in df.itertuples(index=True, name="Row"):
         line_num += 1
-        inrec = [i.strip() for i in inline.strip().split()]
-        field1 = inrec[0]
-    
-        correct, errmsg = go_prediction_check(inline)
-        correct, errmsg = handle_error(correct, errmsg, inline, line_num, fileName)
+        correct, errmsg = go_prediction_check(row)
+        correct, errmsg = handle_error(correct, errmsg, row, line_num, fileName)
 
         if not correct:
             return correct, errmsg
