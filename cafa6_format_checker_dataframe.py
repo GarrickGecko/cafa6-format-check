@@ -29,9 +29,14 @@ def cafa6_file_validator(filepath):
     error_preamble = "\nVALIDATION FAILED"
 
     try:
-        df = pd.read_csv(filepath, sep="\t",  names=["enzyme_ID", "go", "score"])
-        df = df.astype(str)
-        is_valid, message = go(df, filepath)
+        df = pd.read_csv(filepath, sep="\t", header=None) #names=["enzyme_ID", "go", "score"]
+
+        if df.shape[1] != 3:
+            is_valid = False
+            message = "Incorrect number of columns, should be 3"
+        else:
+            is_valid, message = go(df, filepath)
+
     except Exception as e:
         is_valid = False
         message = f"Error reading {filepath} as a TSV file: {str(e)}"

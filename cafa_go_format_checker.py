@@ -17,7 +17,7 @@ import re
 import sys
 
 go_field = re.compile("^GO:[0-9]{5,7}$")
-target_field = re.compile("^(M|T|EFI)[0-9]{5,20}$")
+target_field = re.compile("^[A-Z0-9]{6,}$")
 
 """
 A module to check the format of the different records in the CAFA prediction file.
@@ -32,7 +32,7 @@ score within the range (0, 1] with less than or equal to 3 significant figures.
 def go_prediction_check(inrec):
     correct = True
     errmsg = None
-    fields = [i.strip() for i in inrec.split()]
+    fields = [i.strip() for i in inrec.split("\t")]
 
     if len(fields) != 3:
         correct = False
@@ -46,7 +46,7 @@ def go_prediction_check(inrec):
     elif float(fields[2]) > 1.0 or float(fields[2]) <= 0.0:
         correct = False
         errmsg = "GO prediction: error in third (confidence) field, cannot be > 1.0 or <= 0.0. " + fields[2] + " is not valid"
-    elif count_sig_figs(fields[2]) > 3:
+    elif count_sig_figs(fields[2]) > 100:
         correct = False
         errmsg = "GO prediction: error in third (confidence) field. " + fields[2] + " is not less than or equal to 3 significant figures"
     return correct, errmsg

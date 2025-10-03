@@ -17,7 +17,8 @@ import re
 import sys
 
 go_field = re.compile("^GO:[0-9]{5,7}$")
-target_field = re.compile("^(M|T|EFI)[0-9]{5,20}$")
+target_field = re.compile("^[A-Z0-9]{6,}$")
+confidence_field = re.compile(r"^(1(\.0+)?|0?\.\d+)$")
 
 """
 A module to check the format of the different records in the CAFA prediction file.
@@ -33,25 +34,30 @@ def go_prediction_check(row):
     correct = True
     errmsg = None
     
-    target_id = row.enzyme_ID
-    go_id = row.go
-    confidence_str = row.score
+    target_id = row[1]
+    go_id = row[2]
+    confidence = row[3]
+
+    #print(target_id, go_id, confidence)
 
     if len(row) != 4:
         correct = False
         errmsg = "GO prediction: " + str(len(row)) + " fields detected. Should be 3"
     elif not target_field.match(target_id):
         correct = False
-        errmsg = "GO prediction: error in first (Target ID) field. " + target_id + " is not valid"
+        errmsg = "GO prediction: error in first (Target ID) field. " + str(target_id) + " is not valid"
     elif not go_field.match(go_id):
         correct = False
-        errmsg = "GO prediction: error in second (GO ID) field. " + go_id + " is not valid"
-    elif float(confidence_str) > 1.0 or float(confidence_str) <= 0.0:
+        errmsg = "GO prediction: error in second (GO ID) field. " + str(go_id) + " is not valid"
+    elif not confidence_field.match(str(confidence)):
         correct = False
-        errmsg = "GO prediction: error in third (confidence) field, cannot be > 1.0 or <= 0.0. " + confidence_str + " is not valid"
-    elif count_sig_figs(str(confidence_str)) > 3:
+        errmsg = "GO prediction: error in third (confidence) field, cannot be > 1.0 or <= 0.0. " + str(confidence) + " is not valid"
+    elif confidence > 1.0 or confidence <= 0.0:
         correct = False
-        errmsg = "GO prediction: error in third (confidence) field. " + confidence_str + " is not less than or equal to 3 significant figures"
+        errmsg = "GO prediction: error in third (confidence) field, cannot be > 1.0 or <= 0.0. " + str(confidence) + " is not valid"
+    elif count_sig_figs(str(confidence)) > 100:
+        correct = False
+        errmsg = "GO prediction: error in third (confidence) field. " + str(confidence) + " is not less than or equal to 3 significant figures"
     return correct, errmsg
 
 
@@ -59,7 +65,8 @@ def go_prediction_check(row):
 Function to count significant figures. Accepts a number as a string, returns the number
 of significant figures that number contains.
 """
-def count_sig_figs(number_str):
+def count_sig_figs(number):
+    number_str = str(number)
     number_str = number_str.strip().lstrip("0")
     if "." in number_str:
         number_str = number_str.rstrip("0")
