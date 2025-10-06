@@ -26,10 +26,10 @@ parsed into a `go` and `text` dataframe depending if the string 'Text' is presen
 in the second column of the data. 
 `go` dataframes are verified to be 3 columns, and `text` dataframes to be 4 columns. 
 
-The `cafa6_parser` script contains the `parser` function, which takes a dataframe as
+The `cafa6_parser.py` script contains the `parser` function, which takes a dataframe as
 input and outputs two dataframes, one with text entries and one with GO entries.
 
-Next the `cafa6_go_format_checker` script contains the `go_checker` function, which
+Next the `cafa6_go_format_checker.py` script contains the `go_checker` function, which
 iterates through each line of the program, calling the format checker `go_prediction_check` 
 and the error handler `handle_error` for every line.
 the following format checks of each 'go' dataframe are done as listed below: 
@@ -38,7 +38,7 @@ with entries being at least 6 characters long
 - All entries in the 'go' column must start with the string 'GO:' followed by 5-7 numbers.
 - All entries in the 'confidence' column must be numbers within the range (0, 1]
 
-Similarly, the `cafa6_text_format_checker` script contains the `text_checker` function, which
+Similarly, the `cafa6_text_format_checker.py` script contains the `text_checker` function, which
 iterates through each line of the program, calling the format checker `text_prediction_check` 
 and the error handler `handle_error` for every line.
 the following format checks of each 'text' dataframe are done as listed below:
