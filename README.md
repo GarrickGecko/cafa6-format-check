@@ -11,10 +11,10 @@ Running
 
 For any prediction file:
 ```bash
-python cafa6_format_checker_parser.py filename
+python cafa6_format_checker_parser.py folder
 ```
 
-Where "filename" is the path to the prediction file in .tsv format
+Where "folder" is a directory path which contains one or more .tsv files
 
 
 CAFA6 format checker will check that the filename is correctly formatted.
