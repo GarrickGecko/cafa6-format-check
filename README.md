@@ -11,7 +11,7 @@ available in the `test_data` folder.
 For more information on CAFA  see: https://biofunctionprediction.org/cafa/
 
 ### Running:  
-For any prediction file:
+For any prediction folder:
 ```bash
 python cafa6_format_checker_parser.py folder
 ```
