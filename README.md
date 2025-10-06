@@ -10,8 +10,13 @@ available in the `test_data` folder.
 
 For more information on CAFA  see: https://biofunctionprediction.org/cafa/
 
+<<<<<<< HEAD
 ### Running:  
 For any prediction file:
+=======
+Running
+For any folder of prediction files run:
+>>>>>>> a36929f22b79ff3f1cfdfe8b7c5f088b707e358f
 ```bash
 python cafa6_format_checker_parser.py folder
 ```
@@ -26,6 +31,7 @@ parsed into a `go` and `text` dataframe depending if the string 'Text' is presen
 in the second column of the data. 
 `go` dataframes are verified to be 3 columns, and `text` dataframes to be 4 columns. 
 
+<<<<<<< HEAD
 The `cafa6_parser` script contains the `parser` function, which takes a dataframe as
 input and outputs two dataframes, one with text entries and one with GO entries.
 
@@ -33,15 +39,22 @@ Next the `cafa6_go_format_checker` script contains the `go_checker` function, wh
 iterates through each line of the program, calling the format checker `go_prediction_check` 
 and the error handler `handle_error` for every line.
 the following format checks of each 'go' dataframe are done as listed below: 
+=======
+the following format checks of each `go` dataframe are done as listed below: 
+>>>>>>> a36929f22b79ff3f1cfdfe8b7c5f088b707e358f
 - All entries in the 'target' column must contain only numbers and uppercase letters,
 with entries being at least 6 characters long
 - All entries in the 'go' column must start with the string 'GO:' followed by 5-7 numbers.
 - All entries in the 'confidence' column must be numbers within the range (0, 1]
 
+<<<<<<< HEAD
 Similarly, the `cafa6_text_format_checker` script contains the `text_checker` function, which
 iterates through each line of the program, calling the format checker `text_prediction_check` 
 and the error handler `handle_error` for every line.
 the following format checks of each 'text' dataframe are done as listed below:
+=======
+the following format checks of each `text` dataframe are done as listed below:
+>>>>>>> a36929f22b79ff3f1cfdfe8b7c5f088b707e358f
 - All entries in the 'target' column must contain only numbers and uppercase letters,
 with entries being at least 6 characters long
 - All entries in the 'go' column must contain only the string 'Text'
@@ -50,8 +63,13 @@ with entries being at least 6 characters long
 ### Output: 
 
 Parsed dataframes confirmed to be in the correct format are written in the 
+<<<<<<< HEAD
 active directory as .tsv files. If the formatting for a given file is incorrect, the
 appropriate error message is printed to the console. An example error is given below:
+=======
+active directory as `.tsv` files. If the formatting for a given file is incorrect, the
+appropriate error message is printed to the console. 
+>>>>>>> a36929f22b79ff3f1cfdfe8b7c5f088b707e358f
 
 ```
 VALIDATION FAILED  
