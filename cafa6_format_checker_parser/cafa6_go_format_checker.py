@@ -87,7 +87,7 @@ def handle_error(correct, errmsg, inrec, line_num, fileName):
 
 
 
-def cafa_checker(df, fileName):
+def go_checker(df, fileName):
     """
     Main program that: 
     1. Loops through the lines of a file

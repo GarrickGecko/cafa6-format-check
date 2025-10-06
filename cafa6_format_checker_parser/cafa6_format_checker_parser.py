@@ -19,7 +19,7 @@ import os
 import glob
 import pandas as pd
 
-from cafa6_go_format_checker import cafa_checker as go
+from cafa6_go_format_checker import go_checker as go
 from cafa6_text_format_checker import text_checker as text
 from cafa6_parser import parser as parser
 
