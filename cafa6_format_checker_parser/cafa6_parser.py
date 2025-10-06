@@ -16,13 +16,13 @@
 
 import pandas as pd
 
-'''
-This function parses a dataframe into 'text' and 'GO' dataframes
-
-Input: An unparsed dataframe
-Output: parsed 'text' and 'GO' dataframes
-'''
 def parser(df):
+    '''
+    This function parses a dataframe into 'text' and 'GO' dataframes
+
+    Input: An unparsed dataframe
+    Output: parsed 'text' and 'GO' dataframes
+    '''
     df_text = df[df.iloc[:, 1] == "Text"]
     df_go = df[df.iloc[:, 1] != "Text"]
 

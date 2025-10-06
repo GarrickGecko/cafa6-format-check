@@ -14,7 +14,6 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
 import pandas as pd
 import re
 import sys
@@ -22,18 +21,19 @@ import sys
 go_field = re.compile("Text")
 target_field = re.compile("^[A-Z0-9]{6,}$")
 
-"""
-A module to check the format of the different records in the CAFA prediction file.
-Accept the current record (inrec). Then returns a boolean value if it is correct or 
-not, and an applicable error message.
 
-The "correct" and "errmsg" variables then should be passed to the "handle_error" function
-
-Each current record should consist of a target (enzyme) ID, the word "Text", a confidence
-score within the range (0, 1] with less than or equal to 3 significant figures, and a text
-description specifying the protein function.
-"""
 def text_prediction_check(row):
+    """
+    A module to check the format of the different records in the CAFA prediction file.
+    Accept the current record (inrec). Then returns a boolean value if it is correct or 
+    not, and an applicable error message.
+
+    The "correct" and "errmsg" variables then should be passed to the "handle_error" function
+
+    Each current record should consist of a target (enzyme) ID, the word "Text", a confidence
+    score within the range (0, 1] with less than or equal to 3 significant figures, and a text
+    description specifying the protein function.
+    """
     correct = True
     errmsg = None
     
@@ -62,11 +62,12 @@ def text_prediction_check(row):
     return correct, errmsg
 
 
-"""
-Function to count significant figures. Accepts a number as a string, returns the number
-of significant figures that number contains.
-"""
+
 def count_sig_figs(number):
+    """
+    Function to count significant figures. Accepts a number as a string, returns the number
+    of significant figures that number contains.
+    """
     number_str = str(number)
     number_str = number_str.strip().lstrip("0")
     if "." in number_str:
@@ -75,11 +76,12 @@ def count_sig_figs(number):
     return len(number_str)
 
 
-"""
-Function builds the error message to incorporate the filename and what line the error was raised on.
-Returns the status of whether the line is correct and the error message if one exists.
-"""
+
 def handle_error(correct, errmsg, inrec, line_num, fileName):
+    """
+    Function builds the error message to incorporate the filename and what line the error was raised on.
+    Returns the status of whether the line is correct and the error message if one exists.
+    """
     if not correct:
         line = "Error in %s, line %s, " % (fileName, line_num)
         return False,  line + errmsg
@@ -87,14 +89,14 @@ def handle_error(correct, errmsg, inrec, line_num, fileName):
         return True, "Nothing wrong here"
     
 
-"""
-Main program that: 
-1. Loops through the lines of a file
-2. Calls the Text prediction checker to check each field contains correct info.
-3. calls the error handler "handle_error" to check for error messages/ build the error report.  
 
-"""
 def text_checker(df, fileName):
+    """
+    Main program that: 
+    1. Loops through the lines of a file
+    2. Calls the Text prediction checker to check each field contains correct info.
+    3. calls the error handler "handle_error" to check for error messages/ build the error report.  
+    """
     line_num = 0
 
     for row in df.itertuples(index=True, name="Row"):
